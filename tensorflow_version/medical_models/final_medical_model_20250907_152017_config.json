@@ -1,0 +1,15 @@
+{
+  "model_name": "medical_text_classifier",
+  "architecture": "BiLSTM + Dense",
+  "num_labels": 2,
+  "vocab_size": 30000,
+  "max_length": 128,
+  "test_accuracy": 0.5005776882171631,
+  "timestamp": "20250907_152017",
+  "label_classes": [
+    -1.0,
+    1.0
+  ],
+  "framework": "TensorFlow/Keras",
+  "total_parameters": 4333698
+}

@@ -1,0 +1,109 @@
+/* Additional custom styles for the Medical Chatbot UI */
+
+/* Enhanced animations */
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Loading states */
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Message formatting improvements */
+.message-content strong {
+    color: #374151;
+    font-weight: 600;
+}
+
+.message.user .message-content strong {
+    color: white;
+}
+
+/* Code blocks in responses */
+.message-content code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 14px;
+}
+
+.message.user .message-content code {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Lists in responses */
+.message-content ul, .message-content ol {
+    margin: 12px 0;
+    padding-left: 20px;
+}
+
+.message-content li {
+    margin: 4px 0;
+}
+
+/* Responsive improvements */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 18px;
+    }
+    
+    .model-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .message {
+        max-width: 95%;
+    }
+    
+    .avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+/* Focus improvements for accessibility */
+.message-input:focus {
+    outline: none;
+}
+
+.send-btn:focus {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .header, .input-area, .status-indicator {
+        display: none;
+    }
+    
+    .container {
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+    }
+    
+    .messages {
+        padding: 20px 0;
+    }
+}

@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}Medical Chatbot - TensorFlow Model{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>
+            <i class="fas fa-brain"></i>
+            TensorFlow Medical Assistant
+        </h1>
+        <div class="model-selector">
+            <a href="/" class="model-btn">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <span class="model-btn active">
+                <i class="fas fa-brain"></i> TensorFlow
+            </span>
+            <a href="/pytorch" class="model-btn">
+                <i class="fas fa-microchip"></i> PyTorch BERT
+            </a>
+        </div>
+    </div>
+    
+    <div class="chat-container">
+        <div class="messages" id="messages">
+            <div class="message bot">
+                <div class="avatar bot">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <strong>Hello! I'm your TensorFlow-powered medical assistant.</strong><br><br>
+                    I can help you understand symptoms, provide general medical information, and guide you on when to seek professional care. Please describe your symptoms or ask any medical questions you have.<br><br>
+                    <em style="color: #6b7280; font-size: 14px;">⚠️ Remember: I provide educational information only. Always consult healthcare professionals for medical advice.</em>
+                </div>
+            </div>
+        </div>
+        
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="avatar bot">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="typing-content">
+                <span style="color: #6b7280; margin-right: 8px;">TensorFlow model is thinking</span>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <div class="input-group">
+                <textarea 
+                    id="messageInput" 
+                    class="message-input" 
+                    placeholder="Describe your symptoms or ask a medical question..."
+                    rows="1"
+                ></textarea>
+                <button id="sendBtn" class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="status-indicator" id="statusIndicator">
+        TensorFlow model ready • Powered by Neural Networks
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+class TensorFlowChatbot {
+    constructor() {
+        this.messagesContainer = document.getElementById('messages');
+        this.messageInput = document.getElementById('messageInput');
+        this.sendBtn = document.getElementById('sendBtn');
+        this.typingIndicator = document.getElementById('typingIndicator');
+        this.statusIndicator = document.getElementById('statusIndicator');
+        
+        this.initializeEventListeners();
+        this.checkModelStatus();
+    }
+    
+    initializeEventListeners() {
+        this.sendBtn.addEventListener('click', () => this.sendMessage());
+        
+        this.messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.sendMessage();
+            }
+        });
+        
+        this.messageInput.addEventListener('input', () => {
+            this.autoResize();
+        });
+    }
+    
+    autoResize() {
+        this.messageInput.style.height = 'auto';
+        this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 120) + 'px';
+    }
+    
+    async checkModelStatus() {
+        try {
+            const response = await fetch('/api/models/status');
+            const data = await response.json();
+            
+            if (data.tensorflow.loaded) {
+                this.statusIndicator.textContent = 'TensorFlow model ready • Powered by Neural Networks';
+                this.statusIndicator.className = 'status-indicator success';
+            } else {
+                this.statusIndicator.textContent = 'TensorFlow model unavailable • Please check server status';
+                this.statusIndicator.className = 'status-indicator error';
+            }
+        } catch (error) {
+            this.statusIndicator.textContent = 'Connection error • Please check your internet connection';
+            this.statusIndicator.className = 'status-indicator error';
+        }
+    }
+    
+    async sendMessage() {
+        const message = this.messageInput.value.trim();
+        if (!message || this.sendBtn.disabled) return;
+        
+        // Add user message to chat
+        this.addMessage(message, 'user');
+        
+        // Clear input and disable send button
+        this.messageInput.value = '';
+        this.autoResize();
+        this.sendBtn.disabled = true;
+        
+        // Show typing indicator
+        this.showTyping(true);
+        
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    model: 'tensorflow'
+                })
+            });
+            
+            const data = await response.json();
+            
+            // Hide typing indicator
+            this.showTyping(false);
+            
+            if (data.success) {
+                this.addMessage(data.response, 'bot');
+                this.statusIndicator.textContent = `Response generated using ${data.model_used} model`;
+                this.statusIndicator.className = 'status-indicator success';
+            } else {
+                this.addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                this.statusIndicator.textContent = 'Error: ' + (data.error || 'Unknown error');
+                this.statusIndicator.className = 'status-indicator error';
+            }
+        } catch (error) {
+            this.showTyping(false);
+            this.addMessage('Sorry, I\'m having trouble connecting. Please check your internet connection and try again.', 'bot');
+            this.statusIndicator.textContent = 'Connection error';
+            this.statusIndicator.className = 'status-indicator error';
+        } finally {
+            this.sendBtn.disabled = false;
+            this.messageInput.focus();
+        }
+    }
+    
+    addMessage(content, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = `avatar ${type}`;
+        avatar.innerHTML = type === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        
+        // Convert newlines to HTML breaks and preserve formatting
+        const formattedContent = content.replace(/\n/g, '<br>');
+        messageContent.innerHTML = formattedContent;
+        
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+        
+        this.messagesContainer.appendChild(messageDiv);
+        this.scrollToBottom();
+    }
+    
+    showTyping(show) {
+        this.typingIndicator.style.display = show ? 'flex' : 'none';
+        if (show) {
+            this.scrollToBottom();
+        }
+    }
+    
+    scrollToBottom() {
+        setTimeout(() => {
+            this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        }, 100);
+    }
+}
+
+// Initialize the chatbot when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new TensorFlowChatbot();
+});
+</script>
+{% endblock %}

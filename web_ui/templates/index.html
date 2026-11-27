@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Medical Chatbot - Model Selection{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>
+            <i class="fas fa-stethoscope"></i>
+            Medical AI Assistant
+        </h1>
+        <p style="font-size: 16px; opacity: 0.9; margin-top: 8px;">Choose your preferred AI model to get started</p>
+    </div>
+    
+    <div class="chat-container">
+        <div class="messages" style="justify-content: center; align-items: center; text-align: center; padding: 60px 30px;">
+            <div style="max-width: 600px;">
+                <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); margin-bottom: 40px;">
+                    <i class="fas fa-robot" style="font-size: 48px; color: #4f46e5; margin-bottom: 20px;"></i>
+                    <h2 style="color: #374151; margin-bottom: 16px; font-size: 28px; font-weight: 600;">Welcome to Medical AI Assistant</h2>
+                    <p style="color: #6b7280; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+                        Get instant medical insights powered by advanced AI models. Choose between our TensorFlow neural network or PyTorch BERT transformer for personalized medical guidance.
+                    </p>
+                    <div style="border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 20px;">
+                        <p style="color: #ef4444; font-size: 14px; font-weight: 500;">
+                            ⚠️ Disclaimer: This AI assistant provides educational information only and should not replace professional medical advice.
+                        </p>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <a href="/tensorflow" class="model-card">
+                        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; cursor: pointer; text-decoration: none; color: inherit; border: 2px solid transparent;">
+                            <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                                <i class="fas fa-brain" style="color: white; font-size: 24px;"></i>
+                            </div>
+                            <h3 style="color: #374151; font-size: 20px; font-weight: 600; margin-bottom: 12px;">TensorFlow Model</h3>
+                            <p style="color: #6b7280; font-size: 14px; line-height: 1.5; margin-bottom: 16px;">
+                                Neural network trained on medical data for accurate symptom analysis and diagnosis assistance.
+                            </p>
+                            <div style="display: flex; align-items: center; gap: 8px; color: #f59e0b; font-weight: 500; font-size: 14px;">
+                                <span>Start Chatting</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/pytorch" class="model-card">
+                        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; cursor: pointer; text-decoration: none; color: inherit; border: 2px solid transparent;">
+                            <div style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                                <i class="fas fa-microchip" style="color: white; font-size: 24px;"></i>
+                            </div>
+                            <h3 style="color: #374151; font-size: 20px; font-weight: 600; margin-bottom: 12px;">PyTorch BERT</h3>
+                            <p style="color: #6b7280; font-size: 14px; line-height: 1.5; margin-bottom: 16px;">
+                                Advanced BERT transformer model for sophisticated natural language understanding of medical queries.
+                            </p>
+                            <div style="display: flex; align-items: center; gap: 8px; color: #8b5cf6; font-weight: 500; font-size: 14px;">
+                                <span>Start Chatting</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div style="background: #f8fafc; padding: 24px; border-radius: 12px; border-left: 4px solid #4f46e5;">
+                    <h4 style="color: #374151; font-size: 16px; font-weight: 600; margin-bottom: 8px;">
+                        <i class="fas fa-info-circle" style="color: #4f46e5; margin-right: 8px;"></i>
+                        How it works
+                    </h4>
+                    <p style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+                        Simply describe your symptoms or ask medical questions in natural language. Our AI models will analyze your input and provide relevant medical information and guidance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.model-card:hover > div {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border-color: #e5e7eb;
+}
+
+@media (max-width: 768px) {
+    .messages > div > div:nth-child(2) {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .messages > div {
+        padding: 30px 20px;
+    }
+}
+</style>
+{% endblock %}

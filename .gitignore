@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+/tensorflow_version/medical_models/*.h5
+!/tensorflow_version/medical_models/best_medical_model.weights.h5
+/pytorch_version/medical_models/*.pt
+!/pytorch_version/medical_models/bert_best_model.pt

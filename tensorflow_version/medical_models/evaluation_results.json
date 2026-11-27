@@ -1,0 +1,7 @@
+{
+  "test_accuracy": 0.5005776882171631,
+  "test_loss": 0.6931374669075012,
+  "test_top3_accuracy": 1.0,
+  "num_test_samples": 9521,
+  "num_medical_conditions": 2
+}
